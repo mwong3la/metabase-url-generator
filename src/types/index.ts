@@ -31,7 +31,6 @@ export interface DashboardRequest {
 
   export interface LoginResponse {
     token: string;
-    expiresAt: string;
     user: {
       userId: string;
       agencyId: string;

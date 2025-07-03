@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { appConfig } from './config';
 import embedRoutes from './routes/embed.routes';
+import authRoutes from './routes/auth.routes';
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.use('/api/auth', authRoutes)
 app.use('/api/embed', embedRoutes);
 
 // Health check endpoint

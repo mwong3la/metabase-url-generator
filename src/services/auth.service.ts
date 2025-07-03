@@ -23,15 +23,12 @@ export class AuthService {
     const payload: TokenPayload = {
       userId,
       agencyId,
-      iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // 24 hours
     };
 
-    const token = jwt.sign(payload, appConfig.jwtSecret);
+    const token = jwt.sign(payload, appConfig.jwtSecret, { expiresIn: '1h' });
     
     return {
       token,
-      expiresAt: new Date(payload.exp! * 1000).toISOString(),
       user: {
         userId,
         agencyId,
@@ -44,8 +41,8 @@ export class AuthService {
   static async validateUser(username: string, password: string): Promise<{userId: string, agencyId: string} | null> {
     // This is a mock implementation - replace with your actual authentication logic
     const mockUsers = [
-      { username: 'admin', password: 'admin123', userId: 'user_001', agencyId: 'agency_001' },
-      { username: 'user1', password: 'pass123', userId: 'user_002', agencyId: 'agency_001' },
+      { username: 'admin', password: 'admin123', userId: '4', agencyId: '4' },
+      { username: 'user1', password: 'pass123', userId: 'user_002', agencyId: '13' },
       { username: 'agent1', password: 'agent123', userId: 'user_003', agencyId: 'agency_002' }
     ];
 

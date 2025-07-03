@@ -14,9 +14,12 @@ export class MetabaseService {
       resource: {
         dashboard: dashboardId
       },
-      params,
+      params :{
+        "userid": [params.userId ],
+      },
       exp
     };
+    console.log(payload)
 
     const token = jwt.sign(payload, appConfig.metabaseSecretKey);
     const url = `${appConfig.metabaseSiteUrl}/embed/dashboard/${token}#bordered=true&titled=true`;
@@ -27,15 +30,15 @@ export class MetabaseService {
     };
   }
 
-  static buildDashboardParams(userId?: string, agencyId?: string, additionalParams?: Record<string, any>): Record<string, any> {
+ static buildDashboardParams(userId?: string, agencyId?: string, additionalParams?: Record<string, any>): Record<string, any> {
     const params: Record<string, any> = {};
     
     if (userId) {
-      params.user_id = userId;
+      params.userId = userId;
     }
     
     if (agencyId) {
-      params.agency_id = agencyId;
+      params.agencyId = agencyId;
     }
     
     if (additionalParams) {

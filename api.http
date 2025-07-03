@@ -1,6 +1,6 @@
 ### Variables
 @baseUrl = http://localhost:3001
-@token = 
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwiYWdlbmN5SWQiOiI0IiwiaWF0IjoxNzUxNTQzNzQwLCJleHAiOjE3NTE1NDczNDB9.JC3CHRTph_WnV_lwPj7Sk5KCA5Yh34kHKZ7yPMQ26EE
 
 ### Health Check
 GET {{baseUrl}}/health
@@ -64,10 +64,6 @@ Content-Type: application/json
 
 {
   "dashboardId": 33,
-  "params": {
-    "date_range": "last_30_days",
-    "department": "sales"
-  },
   "expirationMinutes": 15
 }
 
@@ -119,53 +115,6 @@ Content-Type: application/json
 {
   "dashboardId": 33
 }
-
-###
-
-### Error Test - Invalid Token
-POST {{baseUrl}}/api/embed/dashboard
-Authorization: Bearer invalid-token
-Content-Type: application/json
-
-{
-  "dashboardId": 33
-}
-
-###
-
-### Error Test - Missing Dashboard ID
-POST {{baseUrl}}/api/embed/dashboard
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "params": {
-    "test": "value"
-  }
-}
-
-###
-
-### Error Test - Invalid Dashboard ID
-POST {{baseUrl}}/api/embed/dashboard
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "dashboardId": "invalid"
-}
-
-###
-
-### Error Test - GET with invalid dashboard ID
-GET {{baseUrl}}/api/embed/dashboard/invalid
-Authorization: Bearer {{token}}
-
-###
-
-### Error Test - GET with malformed params JSON
-GET {{baseUrl}}/api/embed/dashboard/33?params=invalid-json
-Authorization: Bearer {{token}}
 
 ###
 
