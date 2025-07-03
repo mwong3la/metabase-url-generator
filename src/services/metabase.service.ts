@@ -1,0 +1,47 @@
+import jwt from 'jsonwebtoken';
+import { config } from '../config';
+import { MetabasePayload, EmbedUrlResponse } from '../types';
+
+export class MetabaseService {
+  static generateEmbedUrl(
+    dashboardId: number,
+    params: Record<string, any> = {},
+    expirationMinutes: number = 10
+  ): EmbedUrlResponse {
+    const exp = Math.round(Date.now() / 1000) + (expirationMinutes * 60);
+    
+    const payload: MetabasePayload = {
+      resource: {
+        dashboard: dashboardId
+      },
+      params,
+      exp
+    };
+
+    const token = jwt.sign(payload, config.metabaseSecretKey);
+    const url = `${config.metabaseSiteUrl}/embed/dashboard/${token}#bordered=true&titled=true`;
+    
+    return {
+      url,
+      expiresAt: new Date(exp * 1000).toISOString()
+    };
+  }
+
+  static buildDashboardParams(userId?: string, agencyId?: string, additionalParams?: Record<string, any>): Record<string, any> {
+    const params: Record<string, any> = {};
+    
+    if (userId) {
+      params.user_id = userId;
+    }
+    
+    if (agencyId) {
+      params.agency_id = agencyId;
+    }
+    
+    if (additionalParams) {
+      Object.assign(params, additionalParams);
+    }
+    
+    return params;
+  }
+}
