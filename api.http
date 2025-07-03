@@ -1,0 +1,259 @@
+### Variables
+@baseUrl = http://localhost:3001
+@token = 
+
+### Health Check
+GET {{baseUrl}}/health
+
+###
+
+### Login - Admin User
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+###
+
+### Login - User 1
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "pass123"
+}
+
+###
+
+### Login - Agent 1
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "agent1",
+  "password": "agent123"
+}
+
+###
+
+### Login - Invalid Credentials
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "invalid",
+  "password": "invalid"
+}
+
+###
+
+### Get Current User Info (requires auth)
+GET {{baseUrl}}/api/auth/me
+Authorization: Bearer {{token}}
+
+###
+
+### Generate Dashboard URL - POST Method
+POST {{baseUrl}}/api/embed/dashboard
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "dashboardId": 33,
+  "params": {
+    "date_range": "last_30_days",
+    "department": "sales"
+  },
+  "expirationMinutes": 15
+}
+
+###
+
+### Generate Dashboard URL - POST Method (minimal)
+POST {{baseUrl}}/api/embed/dashboard
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "dashboardId": 33
+}
+
+###
+
+### Generate Dashboard URL - GET Method
+GET {{baseUrl}}/api/embed/dashboard/33?expirationMinutes=15
+Authorization: Bearer {{token}}
+
+###
+
+### Generate Dashboard URL - GET Method with params
+GET {{baseUrl}}/api/embed/dashboard/33?params={"date_range":"last_7_days","status":"active"}&expirationMinutes=20
+Authorization: Bearer {{token}}
+
+###
+
+### Generate Dashboard URL - Different Dashboard
+POST {{baseUrl}}/api/embed/dashboard
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "dashboardId": 45,
+  "params": {
+    "region": "north",
+    "year": 2024
+  },
+  "expirationMinutes": 30
+}
+
+###
+
+### Error Test - Missing Authorization
+POST {{baseUrl}}/api/embed/dashboard
+Content-Type: application/json
+
+{
+  "dashboardId": 33
+}
+
+###
+
+### Error Test - Invalid Token
+POST {{baseUrl}}/api/embed/dashboard
+Authorization: Bearer invalid-token
+Content-Type: application/json
+
+{
+  "dashboardId": 33
+}
+
+###
+
+### Error Test - Missing Dashboard ID
+POST {{baseUrl}}/api/embed/dashboard
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "params": {
+    "test": "value"
+  }
+}
+
+###
+
+### Error Test - Invalid Dashboard ID
+POST {{baseUrl}}/api/embed/dashboard
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "dashboardId": "invalid"
+}
+
+###
+
+### Error Test - GET with invalid dashboard ID
+GET {{baseUrl}}/api/embed/dashboard/invalid
+Authorization: Bearer {{token}}
+
+###
+
+### Error Test - GET with malformed params JSON
+GET {{baseUrl}}/api/embed/dashboard/33?params=invalid-json
+Authorization: Bearer {{token}}
+
+###
+
+### Test Different User Context - Login as User1 first
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "pass123"
+}
+
+###
+
+### Use User1 token for dashboard (update token variable above)
+POST {{baseUrl}}/api/embed/dashboard
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "dashboardId": 33,
+  "params": {
+    "filter": "user_specific"
+  }
+}
+
+###
+
+### Test Different Agency Context - Login as Agent1 first
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "agent1",
+  "password": "agent123"
+}
+
+###
+
+### Use Agent1 token for dashboard (update token variable above)
+POST {{baseUrl}}/api/embed/dashboard
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "dashboardId": 33,
+  "params": {
+    "view": "agency_dashboard"
+  }
+}
+
+###
+
+### Test Long Expiration
+POST {{baseUrl}}/api/embed/dashboard
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "dashboardId": 33,
+  "expirationMinutes": 60
+}
+
+###
+
+### Test with Complex Parameters
+POST {{baseUrl}}/api/embed/dashboard
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "dashboardId": 33,
+  "params": {
+    "filters": {
+      "date": {
+        "start": "2024-01-01",
+        "end": "2024-12-31"
+      },
+      "categories": ["sales", "marketing", "support"],
+      "active": true,
+      "threshold": 100
+    },
+    "options": {
+      "showTotals": true,
+      "groupBy": "month"
+    }
+  },
+  "expirationMinutes": 45
+}
+
+###

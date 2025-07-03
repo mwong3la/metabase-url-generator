@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { config } from './config';
+import { appConfig } from './config';
 import embedRoutes from './routes/embed.routes';
 
 const app = express();
@@ -35,9 +35,9 @@ app.use('*', (req, res) => {
     });
 });
 
-app.listen(config.port, () => {
-    console.log(`Server running on port ${config.port}`);
-    console.log(`Health check: http://localhost:${config.port}/health`);
+app.listen(appConfig.port, () => {
+    console.log(`Server running on port ${appConfig.port}`);
+    console.log(`Health check: http://localhost:${appConfig.port}/health`);
 });
 
 export default app;

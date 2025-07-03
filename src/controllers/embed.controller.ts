@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { DashboardRequest } from '../types';
+import { MetabaseService } from '../services/metabase.service';
+import { AuthService } from '../services/auth.service';
 
 export class EmbedController {
   static async generateDashboardUrl(req: Request, res: Response) {

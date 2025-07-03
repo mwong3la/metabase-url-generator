@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { config } from '../config';
+import { appConfig } from '../config';
 import { MetabasePayload, EmbedUrlResponse } from '../types';
 
 export class MetabaseService {
@@ -18,8 +18,8 @@ export class MetabaseService {
       exp
     };
 
-    const token = jwt.sign(payload, config.metabaseSecretKey);
-    const url = `${config.metabaseSiteUrl}/embed/dashboard/${token}#bordered=true&titled=true`;
+    const token = jwt.sign(payload, appConfig.metabaseSecretKey);
+    const url = `${appConfig.metabaseSiteUrl}/embed/dashboard/${token}#bordered=true&titled=true`;
     
     return {
       url,
